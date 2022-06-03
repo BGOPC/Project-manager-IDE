@@ -43,7 +43,7 @@ class Rust(Language):
                 print("Command is not exist")
 
     def run(self):
-        subprocess.run(["cargo ", "run"])
+        os.system(f"cd {str(self.name)} "+"&& cargo run")
 
     def check(self):
         subprocess.run(["cargo", "check"])
