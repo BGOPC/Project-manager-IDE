@@ -17,7 +17,7 @@ def initialize():
     else:
         if str(open("log.txt").read()) != "":
             file = str(open("log.txt").read()).replace("project_", '').replace('\n', '=').split("=")
-            print(file)
+            # print(file)
             lang = file[3].strip()
             name = file[1].strip()
         else:
