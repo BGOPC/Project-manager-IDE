@@ -3,7 +3,7 @@ import subprocess
 from Init import *
 from time import sleep
 import sys
-from frameworks import *
+# from frameworks import *
 
 class Language:
     def __init__(self, name, lang):
@@ -43,7 +43,7 @@ class Rust(Language):
                 print("Command is not exist")
 
     def run(self):
-        subprocess.run(["cd ",f"{self.name}"," && ","cargo ", "run"])
+        subprocess.run(["cargo ", "run"])
 
     def check(self):
         subprocess.run(["cargo", "check"])
