@@ -27,7 +27,7 @@ class Rust(Language):
         print("Rust initialized")
         if exist(name):
             code = subprocess.run(["cargo", "new", name], capture_output=True)
-            print(code)
+            # print(code)
             mk_old()
         sleep(1.5)
         self.listen()
@@ -49,8 +49,15 @@ class Rust(Language):
         subprocess.run(["cargo", "check"])
 
     def delete(self):
-        os.system(f"cd {self.name}" + " && del *")
-        os.system(f"rmdir {self.name}")
+        os.system(f"cd {self.name} && cargo clean")
+        os.system(f"cd {self.name}/src"+ " && powershell.exe -Command rm *")
+        os.system(f"cd {self.name}"+f" && rmdir src"+" && del *")
+        print("Folder Cleared")
+        print("Deleting log")
+        os.system("del log.txt")
+        # os.system(f"powershell.exe -Command rmdir ./{self.name}")
+        print("deleted  ")
+        print("I can't delete your folder because it's connected to git\ndelte it on your own")
 
 
 class Python(Language):
