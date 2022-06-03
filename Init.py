@@ -45,3 +45,17 @@ def mk_old():
         file = str(open("log.txt").read()).replace("now","old")
         with open("log.txt","w") as f:
             f.write(file)
+
+def Errcheck(lines,lang):
+    py = ["ZeroDivisionError","ZeroDivisionError",'UnicodeTranslateError',"UnicodeDecodeError","UnicodeEncodeError",
+          "UnicodeError","UnboundLocalError","TypeError","SystemExit","SystemError","TabError","IndentationError",
+          "SyntaxError","StopIteration","RuntimeError","ReferenceError","OverflowError","OSError","NotImplementedError",
+          "NameError","MemoryError","KeyboardInterrupt","KeyError","IndexError","ImportError","GeneratorExit","FloatingPointError",
+          "EOFError","AttributeError","AssertionError","BaseException","Exception","Error"]
+    langs = {"Python":py}
+    NE = langs[str(lang)]
+    # print(NE)
+    for i in NE:
+        if i in str(lines):
+            return True
+    return False
