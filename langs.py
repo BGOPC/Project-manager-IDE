@@ -8,7 +8,7 @@ import sys
 class Language:
     def __init__(self, name, lang):
         self.name = name
-        self.lang = lang
+        self.lang = lang.strip()
 
     def Run(self):
         lc = getattr(self, f"execute_{self.lang}")
@@ -46,7 +46,8 @@ class Rust(Language):
         os.system(f"cd {str(self.name)} "+"&& cargo run")
 
     def check(self):
-        subprocess.run(["cargo", "check"])
+        os.system(f" cd {str(self.name)} && cargo check")
+        # subprocess.run([f"cd {self.name}"," && ","cargo", "check"])
 
     def delete(self):
         os.system(f"cd {self.name} && cargo clean")
