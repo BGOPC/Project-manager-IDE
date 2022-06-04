@@ -58,7 +58,7 @@ class Rust(Language):
         os.system("del log.txt")
         # os.system(f"powershell.exe -Command rmdir ./{self.name}")
         print("deleted  ")
-        print("I can't delete your folder because it's connected to git\ndyou can elete it on your own")
+        print("I can't delete your folder because it's connected to git\ndyou can delete it on your own")
     def clear(self):
         os.system("powershell.exe -Command clear")
 
