@@ -58,7 +58,10 @@ class Rust(Language):
         os.system("del log.txt")
         # os.system(f"powershell.exe -Command rmdir ./{self.name}")
         print("deleted  ")
-        print("I can't delete your folder because it's connected to git\ndelte it on your own")
+        print("I can't delete your folder because it's connected to git\ndyou can elete it on your own")
+    def clear(self):
+        os.system("powershell.exe -Command clear")
+
 
 
 class Python(Language):
@@ -66,7 +69,7 @@ class Python(Language):
         super().__init__(name, lang)
         print("Python initialized")
         if exist(name):
-            os.system(f"mkdir {name} && cd {name} && " + f"echo print('Hello, World')  >> {name.strip()}.py ُُ")
+            os.system(f"mkdir {name} && cd {name} && " + f"echo print('Hello, World')  >> {name.strip()}.py ")
             mk_old()
         self.listen()
 
@@ -91,12 +94,12 @@ class Python(Language):
         got_err = False
         while pipe.poll() is None:
             lines = pipe.stderr.readlines()
-            if lines != "":
+            if Errcheck(lines,self.lang):
                 print("Got error! The error is:\n\n---------------------------")
                 print_str = str.join("", lines)
                 print(print_str[:-1])
                 got_err = True
-                break
+                break;
         if not got_err:
             print("No errors occurred!")
 
@@ -104,3 +107,5 @@ class Python(Language):
         os.system(f"cd {self.name}" + " && del *")
         os.system(f"rmdir {self.name}")
         os.system("del log.txt")
+    def clear(self):
+        os.system("powershell.exe -Command clear")
