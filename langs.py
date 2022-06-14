@@ -3,27 +3,11 @@ import subprocess
 from Init import *
 from time import sleep
 import sys
-# from frameworks import *
-
-class Language:
+from frameworks import *
+class Rust(object):
     def __init__(self, name, lang):
         self.name = name
         self.lang = lang.strip()
-
-    def Run(self):
-        lc = getattr(self, f"execute_{self.lang}")
-        lc()
-
-    def execute_Rust(self):
-        Rust(self.name, self.lang)
-
-    def execute_Python(self):
-        Python(self.name, self.lang)
-
-
-class Rust(Language):
-    def __init__(self, name, lang):
-        super().__init__(name, lang)
         print("Rust initialized")
         if exist(name):
             code = subprocess.run(["cargo", "new", name], capture_output=True)
@@ -59,14 +43,20 @@ class Rust(Language):
         # os.system(f"powershell.exe -Command rmdir ./{self.name}")
         print("deleted  ")
         print("I can't delete your folder because it's connected to git\ndyou can delete it on your own")
+        s = input("Do you want a new project? (N/Y)")
+        if s == "Y":
+            initialize()
+        else:
+            exit(1)
     def clear(self):
         os.system("powershell.exe -Command clear")
 
 
 
-class Python(Language):
+class Python(object):
     def __init__(self, name, lang):
-        super().__init__(name, lang)
+        self.name = name
+        self.lang = lang.strip()
         print("Python initialized")
         if exist(name):
             os.system(f"mkdir {name} && cd {name} && " + f"echo print('Hello, World')  >> {name.strip()}.py ")
@@ -107,5 +97,11 @@ class Python(Language):
         os.system(f"cd {self.name}" + " && del *")
         os.system(f"rmdir {self.name}")
         os.system("del log.txt")
+        s = input("Do you want a new project? (N/Y)")
+        if s == "Y":
+            initialize()
+        else:
+            exit(1)
+
     def clear(self):
         os.system("powershell.exe -Command clear")

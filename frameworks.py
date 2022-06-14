@@ -5,7 +5,7 @@ from time import sleep
 import sys
 import langs
 
-class frameworks(langs.Language):
+class frameworks:
     pass
-class PyFW(langs.Python,frameworks):
+class PyFW(frameworks):
     pass
