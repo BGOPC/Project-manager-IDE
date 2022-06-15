@@ -14,7 +14,7 @@ def initialize():
         name = input("name of project:  ")
         lang = input("Language of project:  ")
         with open("log.txt", "a+") as file:
-            file.write(f"""project_name = {name}\nproject_language = {lang} \n now""")
+            file.write(f"""project_name = {name}\nproject_language = {lang}\n now""")
     else:
         if str(open("log.txt").read()) != "":
             file = str(open("log.txt").read()).replace("project_", '').replace('\n', '=').split("=")
