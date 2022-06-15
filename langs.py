@@ -121,6 +121,7 @@ class JS(object):
             code = os.system(f"md {name} && cd {name} && npm init")
             # print(code)
             mk_old()
+        print("please add your commands like run or start in package.json or use the 'add' command to add a pkg")
         sleep(1.5)
         self.ip() # install node packages
         self.listen()
@@ -134,7 +135,23 @@ class JS(object):
             else:
                 print("Command is not exist")
     def ip(self):
-        pass
-        #TODO: make a function to install npm module
+        pkg = input("Your package name or version #>  ").strip()
+        version = input("version( default : latest) #>").strip() or None
+        if not(version == "" or version == "\n"):
+            os.system(f"cd {self.name} && npm i {pkg}@{version}")
+        else:
+            os.system(f"cd {self.name} && npm i {pkg}")
+    def add(self,name=None,usage=None):
+        if name == None:
+            name = input("name #> ").strip()
+        if usage == None:
+            usage = input("usage #> ").strip()
+        import json
+        with open(f"{self.name}/packages.json", "w+") as f:
+            data = json.load(f)
+        #TODO: write a code to add a script to package.json
     def quit(self):
         exit(1)
+    def run(self):
+        pass
+        #TODO: write a code to run a node module
