@@ -14,3 +14,5 @@ class Manage:
 
     def execute_Python(self):
         Python(self.name, self.lang)
+    def execute_JS(self):
+        JS(self.name, self.lang)

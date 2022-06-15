@@ -25,6 +25,8 @@ class Rust(object):
                 function()
             else:
                 print("Command is not exist")
+    def quit(self):
+        exit(1)
 
     def run(self):
         os.system(f"cd {str(self.name)} "+"&& cargo run")
@@ -74,6 +76,8 @@ class Python(object):
                     print("---------------------------\n")
             else:
                 print(f"{cmd} doesn't not exist")
+    def quit(self):
+        exit(1)
 
     def run(self):
         print("running...\n\n--------------------------")
@@ -98,10 +102,39 @@ class Python(object):
         os.system(f"rmdir {self.name}")
         os.system("del log.txt")
         s = input("Do you want a new project? (N/Y)")
-        if s == "Y":
+        if s.lower() == "y":
             initialize()
         else:
             exit(1)
 
     def clear(self):
         os.system("powershell.exe -Command clear")
+
+
+
+class JS(object):
+    def __init__(self, name, lang):
+        self.name = name
+        self.lang = lang.strip()
+        print("node initialized")
+        if exist(name):
+            code = os.system(f"md {name} && cd {name} && npm init")
+            # print(code)
+            mk_old()
+        sleep(1.5)
+        self.ip() # install node packages
+        self.listen()
+    def listen(self):
+        print("run for run the code\ncheck for check the code \ndelete to delete all of project")
+        while True:
+            cmd = input("Command !#>  ")
+            function = getattr(self, cmd, None)
+            if function is not None:
+                function()
+            else:
+                print("Command is not exist")
+    def ip(self):
+        pass
+        #TODO: make a function to install npm module
+    def quit(self):
+        exit(1)

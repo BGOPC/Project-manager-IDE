@@ -9,6 +9,7 @@ def initialize():
         Java except of Jv or java or ...,
         Rust except of rs or rust or Rs or ...,
         Cpp except of c++ or cpluspls or c plus plus or ...,
+        JS for JavaScript or js or ...,
         """)
         name = input("name of project:  ")
         lang = input("Language of project:  ")
@@ -27,6 +28,7 @@ def initialize():
         Java except of Jv or java or ...,
         Rust except of rs or rust or Rs or ...,
         Cpp except of c++ or cpluspls or c plus plus or ...,
+        JS for JavaScript or js or ...,
         """)
             name = input("name of project:  ")
             lang = input("Language of project:  ")
