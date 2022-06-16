@@ -124,8 +124,10 @@ class JS(object):
             # print(code)
             mk_old()
         print("please add your commands like run or start in package.json or use the 'add' command to add a pkg")
+        self.add(name="run",usage="node index.js")
         sleep(1.5)
-        self.ip() # install node packages
+        if input("Do You Wanna Install a Package? (Y/N)").lower() == "y":
+            self.ip() # install node packages
         self.listen()
     def listen(self):
         print("run for run the code\ncheck for check the code \ndelete to delete all of project")
@@ -149,8 +151,10 @@ class JS(object):
         if usage == None:
             usage = input("usage #> ").strip()
         import json
-        with open(f"{self.name}/packages.json", "w+") as f:
-            data = json.load(f)
+        data = json.load(open(f"{self.name}/package.json","r"))
+        data["scripts"][str(name)] = str(usage)
+        json.dump(data,open(f"{self.name}/package.json","w"))
+
         #TODO: write a code to add a script to package.json
     def quit(self):
         exit(1)
