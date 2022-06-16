@@ -10,7 +10,7 @@ class Rust(object):
         self.lang = lang.strip()
         print("Rust initialized")
         if exist(name):
-            code = subprocess.run(["cargo", "new", name], capture_output=True)
+            code = subprocess.run([f"{sudo} cargo", "new", name], capture_output=True)
             # print(code)
             mk_old()
         sleep(1.5)
@@ -36,15 +36,17 @@ class Rust(object):
         # subprocess.run([f"cd {self.name}"," && ","cargo", "check"])
 
     def delete(self):
-        os.system(f"cd {self.name} && cargo clean")
-        os.system(f"cd {self.name}/src"+ " && powershell.exe -Command rm *")
-        os.system(f"cd {self.name}"+f" && rmdir src"+" && del *")
+        os.system(f"cd {self.name} && {sudo} cargo clean")
+        os.system(f"cd {self.name}/src"+ " && {sudo} rm *")
+        os.system(f"cd {self.name}"+f" && {sudo} rmdir src"+" && {sudo} rm *")
         print("Folder Cleared")
         print("Deleting log")
-        os.system("del log.txt")
-        # os.system(f"powershell.exe -Command rmdir ./{self.name}")
-        print("deleted  ")
-        print("I can't delete your folder because it's connected to git\ndyou can delete it on your own")
+        os.system("{sudo} rm log.txt")
+        if sudo != "":
+            os.system(f"{sudo} rmdir {self.name}")
+        print("deleted")
+        if sudo == "":
+            print("I can't delete your folder because it's connected to git\ndyou can delete it on your own")
         s = input("Do you want a new project? (N/Y)")
         if s == "Y":
             initialize()
@@ -98,9 +100,9 @@ class Python(object):
             print("No errors occurred!")
 
     def delete(self):
-        os.system(f"cd {self.name}" + " && del *")
-        os.system(f"rmdir {self.name}")
-        os.system("del log.txt")
+        os.system(f"cd {self.name}" + " && {sudo} rm *")
+        os.system(f"{sudo} rmdir {self.name}")
+        os.system("{sudo} rm log.txt")
         s = input("Do you want a new project? (N/Y)")
         if s.lower() == "y":
             initialize()
@@ -118,7 +120,7 @@ class JS(object):
         self.lang = lang.strip()
         print("node initialized")
         if exist(name):
-            code = os.system(f"mkdir {name} && cd {name} && npm init")
+            code = os.system(f" {sudo} mkdir {name} && cd {name} && npm init")
             # print(code)
             mk_old()
         print("please add your commands like run or start in package.json or use the 'add' command to add a pkg")
@@ -138,9 +140,9 @@ class JS(object):
         pkg = input("Your package name or version #>  ").strip()
         version = input("version( default : latest) #>").strip() or None
         if not(version == "" or version == "\n"):
-            os.system(f"cd {self.name} && npm i {pkg}@{version}")
+            os.system(f"cd {self.name} && {sudo} npm i {pkg}@{version}")
         else:
-            os.system(f"cd {self.name} && npm i {pkg}")
+            os.system(f"cd {self.name} && {sudo} npm i {pkg}")
     def add(self,name=None,usage=None):
         if name == None:
             name = input("name #> ").strip()
