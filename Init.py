@@ -1,5 +1,11 @@
 import os
+from sys import platform
 
+Py = "python "
+clear = "cls"
+if platform in ("linux","linux2","darwin") :
+    Py = "python3 "
+    clear = "clear"
 
 def initialize():
     if not (os.path.exists("log.txt")):

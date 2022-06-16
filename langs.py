@@ -51,7 +51,7 @@ class Rust(object):
         else:
             exit(1)
     def clear(self):
-        os.system("powershell.exe -Command clear")
+        os.system(clear)
 
 
 
@@ -81,10 +81,10 @@ class Python(object):
 
     def run(self):
         print("running...\n\n--------------------------")
-        subprocess.call(["python", f"{self.name}" + "/" + f"{self.name}.py"])
+        subprocess.call([Py, f"{self.name}" + "/" + f"{self.name}.py"])
 
     def check(self):
-        pipe = subprocess.Popen("python " + f"{self.name}" + "/" + f"{self.name}.py", stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=False)
+        pipe = subprocess.Popen(f"{Py} " + f"{self.name}" + "/" + f"{self.name}.py", stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=False)
         got_err = False
         while pipe.poll() is None:
             lines = pipe.stderr.readlines()
@@ -108,7 +108,7 @@ class Python(object):
             exit(1)
 
     def clear(self):
-        os.system("powershell.exe -Command clear")
+        os.system(clear)
 
 
 
@@ -118,7 +118,7 @@ class JS(object):
         self.lang = lang.strip()
         print("node initialized")
         if exist(name):
-            code = os.system(f"md {name} && cd {name} && npm init")
+            code = os.system(f"mkdir {name} && cd {name} && npm init")
             # print(code)
             mk_old()
         print("please add your commands like run or start in package.json or use the 'add' command to add a pkg")

@@ -4,7 +4,6 @@ from Init import *
 from time import sleep
 import sys
 import langs
-
 class frameworks:
     def __init__(self,name,lang,fw):
         self.name = name
