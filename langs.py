@@ -1,33 +1,36 @@
+import json
 import os
 import subprocess
-from Init import *
-from time import sleep
 import sys
+from time import sleep
+
+from rich import print as rp
+
 from frameworks import *
-import json
+from Init import *
+
 
 class Rust(object):
     def __init__(self, name, lang):
-        print("Use 'quit' to exit the program")
+        rp("[red italic] Use 'quit' to exit the program [/ red  italic]")
         self.name = name
         self.lang = lang.strip()
-        print("Rust initialized")
+        rp("[blue italic bold] Rust initialized [/ blue italic bold]")
         if exist(name):
             code = subprocess.run([f"{sudo} cargo", "new", name], capture_output=True)
-            # print(code)
             mk_old()
         sleep(1.5)
         self.listen()
 
     def listen(self):
-        print("'run' for run the code\n'check' for check the code \n'delete' to delete all of project")
+        rp(" [ bright_green italic ] 'run' for run the code\n'check' for check the code \n'delete' to delete all of project [/ bright_green italic ] ")
         while True:
             cmd = input("Command !#>  ")
             function = getattr(self, cmd, None)
             if function is not None:
                 function()
             else:
-                print("command does not exist")
+                rp(f"[bright_red italic] {cmd} does not exist [/ bright_red italic]")
     def quit(self):
         exit(1)
 
@@ -42,14 +45,14 @@ class Rust(object):
         os.system(f"cd {self.name} && {sudo} cargo clean")
         os.system(f"cd {self.name}/src"+ " && {sudo} rm *")
         os.system(f"cd {self.name}"+f" && {sudo} rmdir src"+" && {sudo} rm *")
-        print("Folder Cleared")
-        print("Deleting log")
+        rp("[ cyan italic ] Folder Cleared [/ cyan italic ]")
+        rp("[ cyan italic ] Deleting log [/ cyan italic ]")
         os.system("{sudo} rm log.txt")
         if sudo != "":
             os.system(f"{sudo} rmdir {self.name}")
-        print("deleted")
+        rp("[ cyan italic ] deleted [/ cyan italic ] ")
         if sudo == "":
-            print("I can't delete your folder because it's connected to git\ndyou can delete it on your own")
+            rp(" [ bright_red italic ] I can't delete your folder because it's connected to git\ndyou can delete it on your own [/ bright_red italic ]")
         s = input("Do you want a new project? (N/Y)")
         if s == "Y":
             initialize()
@@ -62,31 +65,39 @@ class Rust(object):
 
 class Python(object):
     def __init__(self, name, lang):
-        print("Use 'quit' to exit the program")
+        rp("[red italic] Use 'quit' to exit the program [/ red italic]")
         self.name = name
         self.lang = lang.strip()
-        print("Python initialized")
+        rp(" [blue italic ] Python initialized  [/blue italic ]")
         if exist(name):
             os.system(f"mkdir {name} && cd {name} && " + f"echo print('Hello, World')  >> {name.strip()}.py ")
             mk_old()
         self.listen()
 
     def listen(self):
-        print("'run' for run the code\n'check' for check the code \n'delete' to delete all of project")
+        rp(" [bright_green italic ]'run' for run the code\n'check' for check the code \n'delete' to delete all of project\n'ip' to install package [/bright_green italic ] ")
         while True:
             cmd = input("Command !#>  ")
             function = getattr(self, cmd, None)
             if function is not None:
                 function()
                 if cmd != "delete":
-                    print("---------------------------\n")
+                    rp(" [ bold ] ---------------------------\n [/ bold ]")
             else:
-                print(f"{cmd} doesn't not exist")
+                rp(f"[bright_red italic] {cmd} does not exist [/ bright_red italic]")
     def quit(self):
         exit(1)
+    def ip(self,ver=None, name=None):
+        if not name:
+            name = input("name of package:  ")
+            ver = input("version of package(latest is default):  ")
+        if ver in ("","\n",None):
+            os.system(f"{sudo} {pip} install {name}")
+        else:os.system(f"{sudo} {pip} install {name}=={ver}")
+        # os.system(f"rm 1")
 
     def run(self):
-        print("running...\n\n--------------------------")
+        rp(" [ bold ] running...\n\n-------------------------- [/ bold ]")
         subprocess.call([Py, f"{self.name}" + "/" + f"{self.name}.py"])
 
     def check(self):
@@ -96,20 +107,19 @@ class Python(object):
             lines = pipe.stderr.readlines()
             if Errcheck(lines,self.lang):
                 if "warn" in lines:
-                    print("Got Warning! The Warn is:\n\n---------------------------")
+                    rp(" [bold] Got Warning! The Warn is:\n\n--------------------------- [bold] ")
                     print_str = str.join("", lines)
                     print(print_str[:-1])
                     got_err = False
                     break;
                 else:
-                    print("Got error! The error is:\n\n---------------------------")
-                    print("Got Warning! The Warn is:\n\n---------------------------")
+                    rp(" [bold] Got error! The error is:\n\n--------------------------- [bold] ")
                     print_str = str.join("", lines)
                     print(print_str[:-1])
                     got_err = True
                     break;
         if not got_err:
-            print("No errors occurred!")
+            rp(" [bold] No errors occurred! [bold]")
 
     def delete(self):
         os.system(f"cd {self.name} && {sudo} rm *")
@@ -128,21 +138,20 @@ class Python(object):
 
 class JS(object):
     def __init__(self, name, lang):
-        print("Use 'quit' to exit the program")
+        rp("[red italic] Use 'quit' to exit the program [/ red italic]")
         self.name = name
 
         self.lang = lang.strip()
-        print("node initialized")
+        rp(" [ blue italic ] Node.JS initialized  [/ blue italic ]")
         if exist(self.name):
             code = os.system(f" {sudo} mkdir {self.name} && cd {self.name} && npm init")
-            # print(code)
             mk_old()
         self.data = json.load(open(f"{self.name}/package.json","r"))
         self.main = self.data["main"]
         self.data["main"] = "src"+self.main
         json.dump(self.data,open(f"{self.name}/package.json","w"))
         os.system(f"cd {self.name} && mkdir src && echo console.log('Hello, World') >> src/{self.main}")
-        print("please add your commands like run or start in package.json or use the 'add' command to add a pkg")
+        rp(" [] please add your commands like run or start in package.json or use the 'add' command to add a pkg")
         self.add(name="run",usage=f"node src/{self.main}")
         sleep(1.5)
         if input("Do You Wanna Install a Package? (Y/N)").lower() == "y":
@@ -152,14 +161,14 @@ class JS(object):
 
 
     def listen(self):
-        print("'run' for run the code\n'check' for check the code \n'delete' to delete all of project\n'ip' to install package and 'add' to add a pkg")
+        rp(" [ bright_green italic ] 'run' for run the code\n'check' for check the code \n'delete' to delete all of project\n'ip' to install package and 'add' to add a pkg [/ bright_green italic ]")
         while True:
             cmd = input("Command !#>  ")
             function = getattr(self, cmd, None)
             if function is not None:
                 function()
             else:
-                print("command does not exist")
+                rp(f"[bright_red italic] {cmd} does not exist [/ bright_red italic]")
 
 
 
@@ -208,18 +217,18 @@ class JS(object):
             lines = pipe.stderr.readlines()
             if Errcheck(lines,self.lang):
                 if "warn" in lines:
-                    print("Got Warning! The Warn is:\n\n---------------------------")
+                    rp(" [bold] Warning error! The error is:\n\n--------------------------- [bold] ")
                     print_str = str.join("", lines)
                     print(print_str[:-1])
                     got_err = False
                     break;
                 else:
-                    print("Got error! The error is:\n\n---------------------------")
-                    print("Got Warning! The Warn is:\n\n---------------------------")
+                    rp(" [bold] Got error! The error is:\n\n--------------------------- [bold] ")
+                    rp(" [bold] Warning error! The error is:\n\n--------------------------- [bold] ")
                     print_str = str.join("", lines)
                     print(print_str[:-1])
                     got_err = True
                     break;
 
         if not got_err:
-            print("No errors occurred!")
+            rp(" [bold] No errors occurred! [bold]")

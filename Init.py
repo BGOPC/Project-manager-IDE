@@ -5,10 +5,12 @@ from sys import platform
 sudo = ""
 Py = "python"
 clear = "cls"
+pip = "pip"
 if platform in ("linux","linux2","darwin") :
     Py = "python3"
     clear = "clear"
     sudo = "sudo"
+    pip = "pip3"
 
 def initialize():
     if not (os.path.exists("log.txt")):
