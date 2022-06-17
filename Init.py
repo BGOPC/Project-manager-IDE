@@ -13,7 +13,7 @@ if platform in ("linux","linux2","darwin") :
     pip = "pip3"
 
 def initialize():
-    if not (os.path.exists("log.txt")):
+    if not (os.path.exists("data.txt")):
         print("""Languages name format is like this:
         Python except of py or python or Py or ...,
         Kotlin except of kt or kotlin of Kt or ...
@@ -24,11 +24,11 @@ def initialize():
         """)
         name = input("name of project:  ")
         lang = input("Language of project:  ")
-        with open("log.txt", "a+") as file:
+        with open("data.txt", "a+") as file:
             file.write(f"""project_name = {name}\nproject_language = {lang}\n now""")
     else:
-        if str(open("log.txt").read()) != "":
-            file = str(open("log.txt").read()).replace("project_", '').replace('\n', '=').split("=")
+        if str(open("data.txt").read()) != "":
+            file = str(open("data.txt").read()).replace("project_", '').replace('\n', '=').split("=")
             # print(file)
             lang = file[3].strip()
             name = file[1].strip()
@@ -43,20 +43,20 @@ def initialize():
         """)
             name = input("name of project:  ")
             lang = input("Language of project:  ")
-            with open("log.txt", "a+") as file:
+            with open("data.txt", "a+") as file:
                 file.write(f"""project_name = {name}\nproject_language = {lang}\n now""")
     return name, lang
 
 
 def exist(name):
-    if not os.path.exists("log.txt"):
+    if not os.path.exists("data.txt"):
         return True
     else:
-        return "now" in str(open("log.txt").read())
+        return "now" in str(open("data.txt").read())
 def mk_old():
-    if os.path.exists("log.txt"):
-        file = str(open("log.txt").read()).replace("now","old")
-        with open("log.txt","w") as f:
+    if os.path.exists("data.txt"):
+        file = str(open("data.txt").read()).replace("now","old")
+        with open("data.txt","w") as f:
             f.write(file)
 
 def Errcheck(lines,lang):

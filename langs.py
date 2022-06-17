@@ -23,7 +23,7 @@ class Rust(object):
         self.listen()
 
     def listen(self):
-        rp(" [ bright_green italic ] 'run' for run the code\n'check' for check the code \n'delete' to delete all of project [/ bright_green italic ] ")
+        rp(" [ spring_green2 italic ] 'run' for run the code\n'check' for check the code \n'delete' to delete all of project [/ spring_green2 italic ] ")
         while True:
             cmd = input("Command !#>  ")
             function = getattr(self, cmd, None)
@@ -47,7 +47,7 @@ class Rust(object):
         os.system(f"cd {self.name}"+f" && {sudo} rmdir src"+" && {sudo} rm *")
         rp("[ cyan italic ] Folder Cleared [/ cyan italic ]")
         rp("[ cyan italic ] Deleting log [/ cyan italic ]")
-        os.system("{sudo} rm log.txt")
+        os.system("{sudo} rm data.txt")
         if sudo != "":
             os.system(f"{sudo} rmdir {self.name}")
         rp("[ cyan italic ] deleted [/ cyan italic ] ")
@@ -75,7 +75,7 @@ class Python(object):
         self.listen()
 
     def listen(self):
-        rp(" [bright_green italic ]'run' for run the code\n'check' for check the code \n'delete' to delete all of project\n'ip' to install package [/bright_green italic ] ")
+        rp(" [spring_green2 italic ]'run' for run the code\n'check' for check the code \n'delete' to delete all of project\n'ip' to install package [/spring_green2 italic ] ")
         while True:
             cmd = input("Command !#>  ")
             function = getattr(self, cmd, None)
@@ -124,7 +124,7 @@ class Python(object):
     def delete(self):
         os.system(f"cd {self.name} && {sudo} rm *")
         os.system(f"{sudo} rmdir {self.name}")
-        os.system(f"{sudo} rm log.txt")
+        os.system(f"{sudo} rm data.txt")
         s = input("Do you want a new project? (N/Y)")
         if s.lower() == "y":
             initialize()
@@ -142,7 +142,7 @@ class JS(object):
         self.name = name
 
         self.lang = lang.strip()
-        rp(" [ blue italic ] Node.JS initialized  [/ blue italic ]")
+        rp(" [blue italic ] Node.JS initialized  [/blue italic ]")
         if exist(self.name):
             code = os.system(f" {sudo} mkdir {self.name} && cd {self.name} && npm init")
             mk_old()
@@ -150,18 +150,22 @@ class JS(object):
         self.main = self.data["main"]
         self.data["main"] = "src"+self.main
         json.dump(self.data,open(f"{self.name}/package.json","w"))
-        os.system(f"cd {self.name} && mkdir src && echo console.log('Hello, World') >> src/{self.main}")
-        rp(" [] please add your commands like run or start in package.json or use the 'add' command to add a pkg")
+        if not (os.path.exists(f"{self.name}/src")):
+            os.system(f"cd {self.name} && mkdir src && echo console.log('Hello, World') >> src/{self.main}")
+        rp(" [italic spring_green1] please add your commands like run or start in package.json or use the 'add' command to add a pkg [/italic spring_green1]")
         self.add(name="run",usage=f"node src/{self.main}")
         sleep(1.5)
-        if input("Do You Wanna Install a Package? (Y/N)").lower() == "y":
-            self.ip() # install node packages
+        if not self.data.get('pk',False):
+            if input("Do You Wanna Install a Package? (Y/N)").lower() == "y":
+                self.ip() # install node packages
+            self.data["pk"] = True
+            json.dump(self.data,open(f"{self.name}/package.json","w"))
         self.listen()
 
 
 
     def listen(self):
-        rp(" [ bright_green italic ] 'run' for run the code\n'check' for check the code \n'delete' to delete all of project\n'ip' to install package and 'add' to add a pkg [/ bright_green italic ]")
+        rp(" [spring_green2 italic ] 'run' for run the code\n'check' for check the code \n'delete' to delete all of project\n'ip' to install package and 'add' to add a pkg [/spring_green2 italic ]")
         while True:
             cmd = input("Command !#>  ")
             function = getattr(self, cmd, None)
@@ -203,7 +207,7 @@ class JS(object):
         os.system(f"cd {self.name}/src && {sudo} rm *")
         os.system(f"cd {self.name} && {sudo} rmdir src && {sudo} rm *")
         os.system(f"{sudo} rmdir {self.name}")
-        os.system(f"{sudo} rm log.txt")
+        os.system(f"{sudo} rm data.txt")
         s = input("Do you want a new project? (N/Y)")
         if s.lower() == "y":
             initialize()
