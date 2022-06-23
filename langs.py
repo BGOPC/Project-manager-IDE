@@ -8,7 +8,8 @@ from rich import print as rp
 
 from frameworks import *
 from Init import *
-
+PATH = os.path.dirname(__file__)
+SCRIPTS = os.path.join(PATH, 'scripts')
 
 class Rust(object):
     def __init__(self, name, lang):
@@ -236,3 +237,35 @@ class JS(object):
 
         if not got_err:
             rp(" [bold] No errors occurred! [bold]")
+
+
+
+class Java(object):
+    def __init__(self, name, lang):
+        rp("[red italic] Use 'quit' to exit the program [/ red italic]")
+        self.name = name
+        self.despath = f"./{self.name}/debug/"
+        self.lang = lang.strip()
+        rp(" [blue italic ] Java initialized  [/blue italic ]")
+        def content():
+            file = open(f"{SCRIPTS}/langs/Main.java","r").read()
+            return str(file)
+        if exist(self.name):
+            code = os.system(f"{sudo} mkdir {self.name} && cd {self.name} && mkdir src && cd src && echo {content()} >> ./Main.java")
+            mk_old()
+        if not (os.path.exists(f"{self.name}/src")):
+            os.system(f"cd {self.name}&& cd {self.name} && mkdir src && cd src && {copy} {SCRIPTS}/langs/Main.java src")
+        sleep(1.5)
+        self.listen()
+
+
+
+    def listen(self):
+        rp(" [spring_green2 italic ] 'run' for run the code\n'check' for check the code \n'delete' to delete all of project\n'ip' to install package and 'Build' to make an executable file [/spring_green2 italic ]")
+        while True:
+            cmd = input("Command !#>  ")
+            function = getattr(self, cmd, None)
+            if function is not None:
+                function()
+            else:
+                rp(f"[bright_red italic] {cmd} does not exist [/ bright_red italic]")

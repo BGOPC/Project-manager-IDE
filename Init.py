@@ -6,11 +6,13 @@ sudo = ""
 Py = "python"
 clear = "cls"
 pip = "pip"
+copy = "copy"
 if platform in ("linux","linux2","darwin") :
     Py = "python3"
     clear = "clear"
     sudo = "sudo"
     pip = "pip3"
+    copy = "cp"
 
 def initialize():
     if not (os.path.exists("data.txt")):
