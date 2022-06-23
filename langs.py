@@ -247,11 +247,13 @@ class Java(object):
         self.despath = f"./{self.name}/debug/"
         self.lang = lang.strip()
         rp(" [blue italic ] Java initialized  [/blue italic ]")
-        def content():
-            file = open(f"{SCRIPTS}/langs/Main.java","r").read()
-            return str(file)
+        def content(self):
+            file = f"package {self.name}.src;" + "\n\n" + open(f"{SCRIPTS}/langs/Main.java","r").read()
+            with open(f"{self.name}/src/Main.java", "w+") as java:
+                java.write(str(file))
         if exist(self.name):
-            code = os.system(f"{sudo} mkdir {self.name} && cd {self.name} && mkdir src && cd src && echo {content()} >> ./Main.java")
+            code = os.system(f"{sudo} mkdir {self.name} && cd {self.name} && mkdir src")
+            content(self)
             mk_old()
         if not (os.path.exists(f"{self.name}/src")):
             os.system(f"cd {self.name}&& cd {self.name} && mkdir src && cd src && {copy} {SCRIPTS}/langs/Main.java src")
@@ -261,7 +263,7 @@ class Java(object):
 
 
     def listen(self):
-        rp(" [spring_green2 italic ] 'run' for run the code\n'check' for check the code \n'delete' to delete all of project\n'ip' to install package and 'Build' to make an executable file [/spring_green2 italic ]")
+        rp(" [spring_green2 italic ] 'run' for run the code\n'check' for check the code \n'delete' to delete all of project\nand 'Build' to make an executable file [/spring_green2 italic ]")
         while True:
             cmd = input("Command !#>  ")
             function = getattr(self, cmd, None)
