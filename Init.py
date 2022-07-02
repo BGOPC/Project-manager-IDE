@@ -67,10 +67,16 @@ def Errcheck(lines,lang):
           "SyntaxError","StopIteration","RuntimeError","ReferenceError","OverflowError","OSError","NotImplementedError",
           "NameError","MemoryError","KeyboardInterrupt","KeyError","IndexError","ImportError","GeneratorExit","FloatingPointError",
           "EOFError","AttributeError","AssertionError","BaseException","Exception","Error"]
+
+
     js = ["Error","InternalError","RangeError",
     "ReferenceError","SyntaxError","TypeError",
     "URIError","Warning"]
-    langs = {"Python":py,"JS":js}
+
+    java = ["Exception","BaseException","Error"]
+
+
+    langs = {"Python":py,"JS":js,"Java":java}
     NE = langs[str(lang)]
     # print(NE)
     for i in NE:

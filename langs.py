@@ -244,8 +244,16 @@ class Java(object):
     def __init__(self, name, lang):
         rp("[red italic] Use 'quit' to exit the program [/ red italic]")
         self.name = name
+        self.main = "Main"
         self.despath = f"./{self.name}/debug/"
         self.lang = lang.strip()
+        if not os.path.exists(self.main):
+            self.pkg = True if input("Package or No? (Y/N)").lower() == "y" else False
+            with open("data.txt","a+") as f:
+                f.write(f"\n{self.pkg}")
+        else:
+            self.pkg = False if "False" in (open("data.txt").read()) else True
+        # print(self.pkg)
         rp(" [blue italic ] Java initialized  [/blue italic ]")
         def content(self):
             file = f"package {self.name}.src;" + "\n\n" + open(f"{SCRIPTS}/langs/Main.java","r").read()
@@ -257,6 +265,10 @@ class Java(object):
             mk_old()
         if not (os.path.exists(f"{self.name}/src")):
             os.system(f"cd {self.name}&& cd {self.name} && mkdir src && cd src && {copy} {SCRIPTS}/langs/Main.java src")
+        if self.pkg:
+            with open(f"{self.name}/src/{self.main}.java","w") as f:
+                file = open(f"{self.name}/src/{self.main}.java").read()
+                f.write(file.replace("// ", ""))
         sleep(1.5)
         self.listen()
 
@@ -271,3 +283,41 @@ class Java(object):
                 function()
             else:
                 rp(f"[bright_red italic] {cmd} does not exist [/ bright_red italic]")
+    def run(self):
+        if self.pkg:
+            print("pkg")
+            os.system(f"cd {self.name} && javac src/{self.main} -d out")
+            os.system(f"cd {self.name}/out && java src.{self.main}")
+        else:
+            os.system(f"cd {self.name}/src && java {self.main}.java")
+    def chmain(self):
+        st = True if input("Are You Sure You Wanna Change The Main File Name? (Y/N)").lower() == 'y' else False
+        if st:
+            self.main = (nm:=input(f"Name Of File !#> ({self.main})")) if nm != self.main else self.main
+        print("Done")
+    def check(self):
+        pipe = subprocess.Popen(f"cd {self.name} && npm run", stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=False)
+        got_err = False
+        while pipe.poll() is None:
+            lines = pipe.stderr.readlines()
+            if Errcheck(lines,self.lang):
+                if "warn" in lines or "Warning" in lines or "warning" in lines:
+                    rp(" [bold] Warning error! The error is:\n\n--------------------------- [bold] ")
+                    print_str = str.join("", lines)
+                    print(print_str[:-1])
+                    got_err = False
+                    break;
+                else:
+                    rp(" [bold] Got error! The error is:\n\n--------------------------- [bold] ")
+                    rp(" [bold] Warning error! The error is:\n\n--------------------------- [bold] ")
+                    print_str = str.join("", lines)
+                    print(print_str[:-1])
+                    got_err = True
+                    break;
+
+        if not got_err:
+            rp(" [bold] No errors occurred! [bold]")
+    def delete(self):
+        os.system(f"cd {self.name} && powershell.exe -Command rm *")
+        os.system(f"rmdir {self.name}")
+        os.system(f"rm data.txt")
