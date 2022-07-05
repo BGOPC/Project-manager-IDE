@@ -249,24 +249,24 @@ class Java(object):
         self.despath = f"./{self.name}/debug/"
         self.lang = lang.strip()
         if not os.path.exists(self.main):
-            self.pkg = True if input("Package or No? (Y/N)").lower() == "y" else False
+            if not (("False" in str(open("data.txt").read())) or ("True" in str(open("data.txt").read()))):
+                self.pkg = True if input("Package or No? (Y/N)").lower() == "y" else False
+            else:
+                self.pkg = True if "True" in str(open("data.txt").read()) else False
             with open("data.txt","a+") as f:
                 f.write(f"\n{self.pkg}")
         else:
             self.pkg = False if "False" in (open("data.txt").read()) else True
         # print(self.pkg)
         rp(" [blue italic ] Java initialized  [/blue italic ]")
-        def content(self):
+        if exist(self.name):
+            os.system(f"mkdir {self.name} && cd {self.name} && mkdir ./src && echo '' > ./src/{self.main}.java")
             ipkg = f"package src;" + "\n\n"  if self.pkg else ""
             file = ipkg + open(f"{SCRIPTS}/langs/Main.java","r").read()
-            with open(f"{self.name}/src/Main.java", "w") as java:
+            os.system("pwd")
+            with open(f"{self.name}/src/{self.main}.java", "w") as java:
                 java.write(str(file))
-        if exist(self.name):
-            os.system(f"mkdir {self.name} && cd {self.name} && mkdir ./src")
-            content(self)
             mk_old()
-        if not (os.path.exists(f"{self.name}/src")):
-            os.system(f"cd {self.name}&& cd {self.name} && mkdir src && cd src && {copy} {SCRIPTS}/langs/Main.java src")
         sleep(1.5)
         self.listen()
 
@@ -283,12 +283,12 @@ class Java(object):
             else:
                 rp(f"[bright_red italic] {cmd} does not exist [/ bright_red italic]")
     def run(self):
+        os.system(f"cd ./{self.name} && javac ./src/{self.main}.java -d out")
         if self.pkg:
             print("pkg")
-            os.system(f"cd ./{self.name} && javac ./src/{self.main}.java -d out")
             os.system(f"cd ./{self.name}/out && java ./src.{self.main}")
         else:
-            os.system(f"cd ./{self.name}/src && java ./{self.main}.java")
+            os.system(f"cd ./{self.name}/src && java ./{self.main}")
     def chmain(self):
         st = True if input("Are You Sure You Wanna Change The Main File Name? (Y/N)").lower() == 'y' else False
         if st:
