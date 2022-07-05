@@ -1,3 +1,4 @@
+from cmath import e, pi
 import json
 import os
 import subprocess
@@ -256,7 +257,8 @@ class Java(object):
         # print(self.pkg)
         rp(" [blue italic ] Java initialized  [/blue italic ]")
         def content(self):
-            file = f"package {self.name}.src;" + "\n\n" + open(f"{SCRIPTS}/langs/Main.java","r").read()
+            ipkg = f"package src;" + "\n\n"  if self.pkg else ""
+            file = ipkg + open(f"{SCRIPTS}/langs/Main.java","r").read()
             with open(f"{self.name}/src/Main.java", "w") as java:
                 java.write(str(file))
         if exist(self.name):
@@ -267,6 +269,7 @@ class Java(object):
             os.system(f"cd {self.name}&& cd {self.name} && mkdir src && cd src && {copy} {SCRIPTS}/langs/Main.java src")
         sleep(1.5)
         self.listen()
+
 
 
 
@@ -282,17 +285,22 @@ class Java(object):
     def run(self):
         if self.pkg:
             print("pkg")
-            os.system(f"cd {self.name} && javac src/{self.main} -d out")
-            os.system(f"cd {self.name}/out && java src.{self.main}")
+            os.system(f"cd ./{self.name} && javac ./src/{self.main}.java -d out")
+            os.system(f"cd ./{self.name}/out && java ./src.{self.main}")
         else:
-            os.system(f"cd {self.name}/src && java {self.main}.java")
+            os.system(f"cd ./{self.name}/src && java ./{self.main}.java")
     def chmain(self):
         st = True if input("Are You Sure You Wanna Change The Main File Name? (Y/N)").lower() == 'y' else False
         if st:
             self.main = (nm:=input(f"Name Of File !#> ({self.main})")) if nm != self.main else self.main
         print("Done")
+
+
     def check(self):
-        pipe = subprocess.Popen(f"cd {self.name} && npm run", stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=False)
+        os.system(f"ls ./{self.name}/src")
+        os.system(f"cd ./{self.name} && javac ./src/{self.main}.java")
+        run = f"cd {self.name} && java src.{self.main}" if self.pkg else "java src/{self.main}"
+        pipe = subprocess.Popen(f"javac ./{self.name}/src/{self.main}.java -d out && cd ./{self.name}/out && {run}", stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=False)
         got_err = False
         while pipe.poll() is None:
             lines = pipe.stderr.readlines()
@@ -317,4 +325,11 @@ class Java(object):
         os.system(f"cd {self.name} && "+delall)
         os.system(f"rmdir {self.name}")
         os.system(f"rm data.txt")
-        exit(1)
+        s = input("Do you want a new project? (N/Y)")
+        if s.lower() == "y":
+            initialize()
+        else:
+            exit(1)
+
+    def quit(self):
+        exit(0)
