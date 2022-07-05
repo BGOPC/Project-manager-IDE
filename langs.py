@@ -269,6 +269,7 @@ class Java(object):
             with open(f"{self.name}/src/{self.main}.java","w") as f:
                 file = open(f"{self.name}/src/{self.main}.java").read()
                 f.write(file.replace("// ", ""))
+                f.close()
         sleep(1.5)
         self.listen()
 
