@@ -253,14 +253,14 @@ class Java(object):
                 self.pkg = True if input("Package or No? (Y/N)").lower() == "y" else False
             else:
                 self.pkg = True if "True" in str(open("data.txt").read()) else False
-            with open("data.txt","a+") as f:
-                f.write(f"\n{self.pkg}")
+                with open("data.txt","a+") as f:
+                    f.write(f"\n{self.pkg}")
         else:
             self.pkg = False if "False" in (open("data.txt").read()) else True
         # print(self.pkg)
         rp(" [blue italic ] Java initialized  [/blue italic ]")
         if exist(self.name):
-            os.system(f"mkdir {self.name} && cd {self.name} && mkdir ./src && echo '' > ./src/{self.main}.java")
+            os.system(f"mkdir {self.name} && cd {self.name} && mkdir src && echo '' > src/{self.main}.java")
             ipkg = f"package src;" + "\n\n"  if self.pkg else ""
             file = ipkg + open(f"{SCRIPTS}/langs/Main.java","r").read()
             os.system("pwd")
