@@ -44,7 +44,7 @@ class Rust(object):
 
     def delete(self):
         os.system(f"cd {self.name} && {sudo} cargo clean")
-        os.system(f"cd {self.name}/src"+ " && {sudo} rm *")
+        os.system(f"cd {self.name}/src"+ f" && {sudo} rm *")
         os.system(f"cd {self.name}"+f" && {sudo} rmdir src"+" && {sudo} rm *")
         rp("[ cyan italic ] Folder Cleared [/ cyan italic ]")
         rp("[ cyan italic ] Deleting log [/ cyan italic ]")
@@ -257,19 +257,14 @@ class Java(object):
         rp(" [blue italic ] Java initialized  [/blue italic ]")
         def content(self):
             file = f"package {self.name}.src;" + "\n\n" + open(f"{SCRIPTS}/langs/Main.java","r").read()
-            with open(f"{self.name}/src/Main.java", "w+") as java:
+            with open(f"{self.name}/src/Main.java", "w") as java:
                 java.write(str(file))
         if exist(self.name):
-            code = os.system(f"{sudo} mkdir {self.name} && cd {self.name} && mkdir src")
+            os.system(f"mkdir {self.name} && cd {self.name} && mkdir ./src")
             content(self)
             mk_old()
         if not (os.path.exists(f"{self.name}/src")):
             os.system(f"cd {self.name}&& cd {self.name} && mkdir src && cd src && {copy} {SCRIPTS}/langs/Main.java src")
-        if self.pkg:
-            with open(f"{self.name}/src/{self.main}.java","w") as f:
-                file = open(f"{self.name}/src/{self.main}.java").read()
-                f.write(file.replace("// ", ""))
-                f.close()
         sleep(1.5)
         self.listen()
 
@@ -319,6 +314,7 @@ class Java(object):
         if not got_err:
             rp(" [bold] No errors occurred! [bold]")
     def delete(self):
-        os.system(f"cd {self.name} && powershell.exe -Command rm *")
+        os.system(f"cd {self.name} && "+delall)
         os.system(f"rmdir {self.name}")
         os.system(f"rm data.txt")
+        exit(1)

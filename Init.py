@@ -7,12 +7,14 @@ Py = "python"
 clear = "cls"
 pip = "pip"
 copy = "copy"
+delall = f"powershell.exe -Command rm *"
 if platform in ("linux","linux2","darwin") :
     Py = "python3"
     clear = "clear"
     sudo = "sudo"
     pip = "pip3"
     copy = "cp"
+    delall = f"rm -rf ./*"
 
 def initialize():
     if not (os.path.exists("data.txt")):
