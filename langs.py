@@ -54,7 +54,7 @@ class Rust(object):
             os.system(f"{sudo} rmdir {self.name}")
         rp("[ cyan italic ] deleted [/ cyan italic ] ")
         if sudo == "":
-            rp(" [ bright_red italic ] I can't delete your folder because it's connected to git\ndyou can delete it on your own [/ bright_red italic ]")
+            rp(" [ bright_red italic ] I can't delete your folder because it's connected to git\nyou can delete it on your own [/ bright_red italic ]")
         s = input("Do you want a new project? (N/Y)")
         if s == "Y":
             initialize()
@@ -246,15 +246,15 @@ class Java(object):
         rp("[red italic] Use 'quit' to exit the program [/ red italic]")
         self.name = name
         self.main = "Main"
-        self.despath = f"./{self.name}/debug/"
+        self.depath = f"./{self.name}/debug/"
         self.lang = lang.strip()
         if not os.path.exists(self.main):
             if not (("False" in str(open("data.txt").read())) or ("True" in str(open("data.txt").read()))):
                 self.pkg = True if input("Package or No? (Y/N)").lower() == "y" else False
-            else:
-                self.pkg = True if "True" in str(open("data.txt").read()) else False
                 with open("data.txt","a+") as f:
                     f.write(f"\n{self.pkg}")
+            else:
+                self.pkg = True if "True" in str(open("data.txt").read()) else False
         else:
             self.pkg = False if "False" in (open("data.txt").read()) else True
         # print(self.pkg)
@@ -282,13 +282,19 @@ class Java(object):
                 function()
             else:
                 rp(f"[bright_red italic] {cmd} does not exist [/ bright_red italic]")
+
+
+
     def run(self):
+        print("OutPut:\n"+"-"*15)
         os.system(f"cd ./{self.name} && javac ./src/{self.main}.java -d out")
         if self.pkg:
             print("pkg")
-            os.system(f"cd ./{self.name}/out && java ./src.{self.main}")
+            os.system(f"cd ./{self.name}/out && java src.{self.main}")
         else:
-            os.system(f"cd ./{self.name}/src && java ./{self.main}")
+            os.system(f"cd ./{self.name}/out && java {self.main}")
+
+        print("-"*15)
     def chmain(self):
         st = True if input("Are You Sure You Wanna Change The Main File Name? (Y/N)").lower() == 'y' else False
         if st:
@@ -297,30 +303,10 @@ class Java(object):
 
 
     def check(self):
-        os.system(f"ls ./{self.name}/src")
-        os.system(f"cd ./{self.name} && javac ./src/{self.main}.java")
-        run = f"cd {self.name} && java src.{self.main}" if self.pkg else "java src/{self.main}"
-        pipe = subprocess.Popen(f"javac ./{self.name}/src/{self.main}.java -d out && cd ./{self.name}/out && {run}", stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=False)
-        got_err = False
-        while pipe.poll() is None:
-            lines = pipe.stderr.readlines()
-            if Errcheck(lines,self.lang):
-                if "warn" in lines or "Warning" in lines or "warning" in lines:
-                    rp(" [bold] Warning error! The error is:\n\n--------------------------- [bold] ")
-                    print_str = str.join("", lines)
-                    print(print_str[:-1])
-                    got_err = False
-                    break;
-                else:
-                    rp(" [bold] Got error! The error is:\n\n--------------------------- [bold] ")
-                    rp(" [bold] Warning error! The error is:\n\n--------------------------- [bold] ")
-                    print_str = str.join("", lines)
-                    print(print_str[:-1])
-                    got_err = True
-                    break;
+        os.system(f"cd ./{self.name} && javac ./src/{self.main}.java -d out")
+        run = f"cd {self.name} && java src.{self.main}" if self.pkg else f"java out/{self.main}"
+        pipe = subprocess.Popen(f"javac ./{self.name}/src/{self.main}.java -d out && cd ./{self.name}/out && {run} && {sudo} rm ./out/*", stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True, shell=False)
 
-        if not got_err:
-            rp(" [bold] No errors occurred! [bold]")
     def delete(self):
         os.system(f"cd {self.name} && "+delall)
         os.system(f"rmdir {self.name}")

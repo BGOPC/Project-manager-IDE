@@ -75,7 +75,7 @@ def Errcheck(lines,lang):
     "ReferenceError","SyntaxError","TypeError",
     "URIError","Warning"]
 
-    java = ["Exception","BaseException","Error"]
+    java = ["Exception","BaseException","error"]
 
 
     langs = {"Python":py,"JS":js,"Java":java}
