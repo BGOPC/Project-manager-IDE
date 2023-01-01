@@ -7,7 +7,6 @@ from time import sleep
 
 from rich import print as rp
 
-from frameworks import *
 from Init import *
 PATH = os.path.dirname(__file__)
 SCRIPTS = os.path.join(PATH, 'scripts')

@@ -39,10 +39,8 @@ def initialize():
         else:
             print("""Languages name format is like this:
         Python except of py or python or Py or ...,
-        Kotlin except of kt or kotlin of Kt or ...
         Java except of Jv or java or ...,
         Rust except of rs or rust or Rs or ...,
-        Cpp except of c++ or cpluspls or c plus plus or ...,
         JS for JavaScript or js or ...,
         """)
             name = input("name of project:  ")
@@ -52,7 +50,7 @@ def initialize():
     return name, lang
 
 
-def exist(name):
+def exist():
     if not os.path.exists("data.txt"):
         return True
     else:

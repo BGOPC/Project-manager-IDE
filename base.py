@@ -1,4 +1,3 @@
-from frameworks import *
 from langs import *
 
 class Manage:
